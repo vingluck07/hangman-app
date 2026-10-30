@@ -45,3 +45,13 @@ Moved all three into `documentation/`, created this `chat_transcript.md`, and sa
 
 Items for Vin to review: the word lists; duplicate guesses raise an error (no penalty) per spec; `to_dict()` adds a `max_incorrect` field not in the spec examples (for the browser drawing).
 
+**Vin:** all that looks good. You can move onto phase 2
+
+**Claude:** Implemented Phase 2 (Flask Server and REST API):
+- `server.py` — `create_app()` factory; `POST /api/games` (201), `GET /api/games/{id}`, `POST /api/games/{id}/guess`. Thread-safe in-memory game store with UUID game IDs (oldest dropped past 10,000 games). JSON error bodies `{"error": ...}`: 400 for bad difficulty/letter/duplicate/malformed body, 404 for unknown game or API route, 405 wrong method, 409 for guessing after game over. Responses include `game_id`; guesses add `correct`. Serves `static/index.html` (placeholder until Phase 3). Reads `PORT`/`FLASK_DEBUG` from env.
+- `requirements.txt` (Flask) and `requirements-dev.txt` (+pytest).
+- `tests/test_api.py` — 28 API tests; 67 total, all passing. Smoke-tested a full game with curl against the running server.
+- Spec updated with 409 and response fields. Checked off Phase 2; committed.
+
+Items for Vin to review: 409 for guess-after-game-over (spec listed only 400/404); added `correct` field; games are in memory and lost on server restart.
+

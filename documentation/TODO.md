@@ -52,19 +52,19 @@ The game engine and word loader work and can be tested without running a web ser
 
 ### Tasks
 
-- [ ] Create `server.py` using Flask.
-- [ ] Add in-memory storage for active games.
-- [ ] Generate unique game IDs.
-- [ ] Implement `POST /api/games` (create game with difficulty).
-- [ ] Implement `GET /api/games/{game_id}` (get current state).
-- [ ] Implement `POST /api/games/{game_id}/guess` (submit a letter).
-- [ ] Validate difficulty and guess input.
-- [ ] Return consistent JSON responses and error bodies.
-- [ ] Return appropriate HTTP status codes (200, 201, 400, 404).
-- [ ] Handle unknown game IDs and malformed requests.
-- [ ] Ensure the hidden word is never included while status is `playing`.
-- [ ] Serve the browser client's static files from Flask.
-- [ ] Add `requirements.txt`.
+- [x] Create `server.py` using Flask.
+- [x] Add in-memory storage for active games.
+- [x] Generate unique game IDs.
+- [x] Implement `POST /api/games` (create game with difficulty).
+- [x] Implement `GET /api/games/{game_id}` (get current state).
+- [x] Implement `POST /api/games/{game_id}/guess` (submit a letter).
+- [x] Validate difficulty and guess input.
+- [x] Return consistent JSON responses and error bodies.
+- [x] Return appropriate HTTP status codes (200, 201, 400, 404).
+- [x] Handle unknown game IDs and malformed requests.
+- [x] Ensure the hidden word is never included while status is `playing`.
+- [x] Serve the browser client's static files from Flask.
+- [x] Add `requirements.txt`.
 
 ### Completion Criteria
 

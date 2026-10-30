@@ -144,6 +144,11 @@ GET
 
     /api/games/{game_id}
 
+Every game response includes `game_id`, `pattern`, `guessed_letters`,
+`incorrect_letters`, `remaining_guesses`, `max_incorrect`, and `status`.
+Guess responses also include `correct` (true/false). `word` is included
+only once `status` is `won` or `lost`.
+
 ------------------------------------------------------------------------
 
 ## Errors
@@ -151,6 +156,7 @@ GET
 -   `400` — invalid difficulty, invalid letter, duplicate guess, or
     malformed request
 -   `404` — unknown game ID
+-   `409` — guess submitted after the game has ended
 
 Error responses use a consistent JSON body, e.g.
 `{"error": "message"}`.
