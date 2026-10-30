@@ -25,5 +25,23 @@ Moved all three into `documentation/`, created this `chat_transcript.md`, and sa
 
 **Vin:** next, I want to turn the entire hangman-app folder into a github repo and connect it to a remote repo: https://github.com/vingluck07/hangman-app
 
-**Claude:** Initialized a git repo in `hangman-app` on branch `main`, added a Python `.gitignore`, made the initial commit (as Vin Gluck <vin.gluck07@gmail.com>), and added `origin` → https://github.com/vingluck07/hangman-app.
+**Claude:** Initialized a git repo in `hangman-app` on branch `main`, added a Python `.gitignore`, made the initial commit (as Vin Gluck <vin.gluck07@gmail.com>), and added `origin` → https://github.com/vingluck07/hangman-app. Push from the session failed (no GitHub credentials there); Vin needs to run `git push -u origin main` locally on Windows.
+
+**Vin:** how do i make it push using the same account every time
+
+**Claude:** Use Git Credential Manager (bundled with Git for Windows): check `git config --global credential.helper` returns `manager`; sign in once on first push and it's saved in Windows Credential Manager. Pin the account with `git config --global credential.https://github.com.username vingluck07`. To switch away from a wrong cached account, remove `git:https://github.com` in Windows Credential Manager (or `git credential-manager github logout <user>`), then push again.
+
+**Vin:** i would like it to not be a global setting, just for this repo
+
+**Claude:** Set repo-local config in `hangman-app/.git/config`: `credential.https://github.com.username=vingluck07` and `credential.useHttpPath=true` (GCM saves the login for this repo's URL only). If the global username setting was already applied, undo with `git config --global --unset credential.https://github.com.username`.
+
+**Vin:** i want you to implement this app in a phase-by-phase format. Please check in with me after every phase and let me know if there is anything you want me to look over before proceeding to the next phase. Please commit regularly.
+
+**Claude:** Implemented Phase 1 (Game Engine and Word Management):
+- `game.py` — `HangmanGame` class: tracks guessed/incorrect letters, 6 lives by default, validates single a-z letters (case-insensitive), rejects duplicates and guesses after game over without changing state, `playing`/`won`/`lost` status, spaced masked pattern (`_ e _ _ e`), client-safe `to_dict()` that includes `word` only after the game ends.
+- `words.py` — `WordManager` loads `words/easy.txt`, `medium.txt`, `hard.txt`; skips blanks/`#` comments, lower-cases, de-duplicates, rejects non-alphabetic lines; random word by difficulty; `InvalidDifficultyError` for bad difficulty.
+- Word lists: 40 words each (written fresh; originals from the Cursor project weren't in the folder).
+- `tests/` — 39 pytest tests, all passing. Checked off Phase 1 in `TODO.md`; committed.
+
+Items for Vin to review: the word lists; duplicate guesses raise an error (no penalty) per spec; `to_dict()` adds a `max_incorrect` field not in the spec examples (for the browser drawing).
 

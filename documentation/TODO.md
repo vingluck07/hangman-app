@@ -20,27 +20,27 @@ The authoritative requirements are defined in `Specification.md`.
 
 ### Game Engine
 
-- [ ] Create the project directory structure.
-- [ ] Create `game.py` with a `HangmanGame` class.
-- [ ] Store the hidden word internally.
-- [ ] Track guessed letters and incorrect letters.
-- [ ] Track the maximum number of incorrect guesses.
-- [ ] Validate single-letter guesses (alphabetic, one character, case-insensitive).
-- [ ] Detect duplicate guesses.
-- [ ] Generate the masked word.
-- [ ] Detect win and loss.
-- [ ] Implement status values: `playing`, `won`, `lost`.
-- [ ] Return a client-safe game-state dictionary.
-- [ ] Reveal the answer only after the game ends.
+- [x] Create the project directory structure.
+- [x] Create `game.py` with a `HangmanGame` class.
+- [x] Store the hidden word internally.
+- [x] Track guessed letters and incorrect letters.
+- [x] Track the maximum number of incorrect guesses.
+- [x] Validate single-letter guesses (alphabetic, one character, case-insensitive).
+- [x] Detect duplicate guesses.
+- [x] Generate the masked word.
+- [x] Detect win and loss.
+- [x] Implement status values: `playing`, `won`, `lost`.
+- [x] Return a client-safe game-state dictionary.
+- [x] Reveal the answer only after the game ends.
 
 ### Word Management
 
-- [ ] Add `words/easy.txt`, `words/medium.txt`, `words/hard.txt`.
-- [ ] Create a word-loading module.
-- [ ] Validate that loaded words contain only alphabetic characters.
-- [ ] Remove duplicates and blank lines when loading.
-- [ ] Support random word selection by difficulty.
-- [ ] Raise a clear error for an invalid difficulty.
+- [x] Add `words/easy.txt`, `words/medium.txt`, `words/hard.txt`.
+- [x] Create a word-loading module.
+- [x] Validate that loaded words contain only alphabetic characters.
+- [x] Remove duplicates and blank lines when loading.
+- [x] Support random word selection by difficulty.
+- [x] Raise a clear error for an invalid difficulty.
 
 ### Completion Criteria
 
