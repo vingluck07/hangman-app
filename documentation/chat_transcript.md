@@ -92,5 +92,19 @@ Items for Vin to review: try it locally (`python server.py`, open http://localho
 - `tests/test_api.py` — added tests for 413, 500, logging, and concurrency (7 threads guessing at once → exactly 6 accepted + 1 rejected after loss; same letter sent 5× at once counts once).
 - `tests/test_browser.py` — optional Playwright end-to-end tests at desktop and phone sizes: win via physical keyboard, loss via on-screen keys, drawing per wrong guess, rapid double-press counts once, word not in page/sessionStorage while playing, refresh resumes, long word stays on one line (regression), unknown saved game starts fresh, no console errors. Skipped automatically if Playwright isn't installed.
 - `documentation/BUGS.md` — bug log with fixes and regression tests.
-- Results: 88 passed (73 locally on Vin's machine + 15 browser tests in Chromium; browser suite run 3× with no flakes). Checked off Phase 4 except manual Firefox testing, left for Vin. Committed.
+- Results: 88 passed (72 API/unit tests + 16 browser tests in Chromium; browser suite run 3× with no flakes). Checked off Phase 4 except manual Firefox testing, left for Vin. Committed.
+
+**Vin:** why is the 1 test skipped
+
+**Claude:** The skip is the whole `tests/test_browser.py` file — it calls `pytest.importorskip("playwright.sync_api")`, so when Playwright isn't installed pytest skips the file and reports it as 1 skip. To run those 16 browser tests: `pip install playwright`, `python -m playwright install chromium`, then `pytest` (expect 88 passed). `pytest -rs` shows the skip reason.
+
+**Vin:** sounds good. you can move onto phase 5. Please let me know if you need me to do anything. At the end, I want a live link that anyone can access at any time from any device
+
+**Claude:** Prepared Phase 5 (Cloud Deployment):
+- Added `gunicorn` to `requirements.txt`; verified the production start command locally.
+- Added `render.yaml` (Render Blueprint, free plan): build `pip install -r requirements.txt`, start `gunicorn server:app --workers 1 --threads 8 --bind 0.0.0.0:$PORT` (one worker because games are stored in memory), health check `/healthz`, Python 3.12.7, auto-deploy on push.
+- Added `GET /healthz` endpoint + test (73 passed locally).
+- Wrote `README.md`: local setup on Windows, tests, API reference, deployment steps, free-plan notes.
+- Committed. Next steps for Vin: push, then create the Render Blueprint from the GitHub repo and send the URL so it can be verified and added to the README.
+- Noted the free plan sleeps after ~15 min idle (first load after that takes up to a minute; in-progress games lost).
 

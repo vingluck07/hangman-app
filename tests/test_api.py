@@ -257,3 +257,9 @@ def test_same_letter_sent_twice_concurrently_counts_once(client):
         t.join()
     assert sorted(codes) == [200] + [400] * 4
     assert client.get(f"/api/games/{gid}").get_json()["remaining_guesses"] == 5
+
+
+def test_health_check(client):
+    r = client.get("/healthz")
+    assert r.status_code == 200
+    assert r.get_json() == {"status": "ok"}

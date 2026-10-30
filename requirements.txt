@@ -1,1 +1,2 @@
 Flask>=3.0,<4
+gunicorn>=22,<24  # production server on Render (Linux only; use `python server.py` on Windows)

@@ -76,6 +76,10 @@ def create_app(word_manager=None, max_games=MAX_ACTIVE_GAMES):
     def index():
         return send_from_directory(STATIC_DIR, "index.html")
 
+    @app.get("/healthz")
+    def healthz():
+        return jsonify({"status": "ok"})
+
     # ----- REST API ----------------------------------------------------------
 
     @app.post("/api/games")
