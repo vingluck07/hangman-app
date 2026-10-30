@@ -81,3 +81,7 @@ Items for Vin to review: try it locally (`python server.py`, open http://localho
 
 **Claude:** Softened the palette to pastels: peach → blush pink → lavender → baby blue gradient with faint glows, dusty-purple title, lighter card and button colors; dark mode is a muted dusk version. Also fixed a bug spotted in screenshots — long words (8+ letters) wrapped onto two lines; the masked word now stays on one line and fits up to 10-letter words on phones. Wrong letters now show "—" instead of "NONE". Committed.
 
+**Vin:** also I would like you to change the "Hangman" font to something more playful to make it feel more like a fun game
+
+**Claude:** Changed the title to Fredoka (rounded, bubbly), bigger and tilted slightly; it wobbles the other way on hover. The New Game button uses Fredoka too. The font is self-hosted in `static/fonts/` (free SIL Open Font License, included as `OFL.txt`) so it works offline and on the deployed site without relying on Google Fonts. Verified in screenshots. Committed.
+
