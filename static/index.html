@@ -4,9 +4,52 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hangman</title>
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-  <h1>Hangman</h1>
-  <p>Browser client coming in Phase 3. The API is live at <code>/api/games</code>.</p>
+  <main class="app">
+    <header class="top">
+      <h1>Hangman</h1>
+      <form id="new-game-form" class="controls">
+        <label for="difficulty">Difficulty</label>
+        <select id="difficulty" name="difficulty">
+          <option value="easy">Easy</option>
+          <option value="medium" selected>Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+        <button type="submit" id="new-game-btn">New Game</button>
+      </form>
+    </header>
+
+    <section class="board">
+      <svg id="gallows" viewBox="0 0 200 220" role="img" aria-label="Hangman drawing">
+        <g class="frame">
+          <line x1="20" y1="210" x2="140" y2="210" />
+          <line x1="50" y1="210" x2="50" y2="15" />
+          <line x1="50" y1="15" x2="130" y2="15" />
+          <line x1="130" y1="15" x2="130" y2="40" />
+        </g>
+        <g class="figure">
+          <circle class="part" cx="130" cy="58" r="18" />
+          <line class="part" x1="130" y1="76" x2="130" y2="135" />
+          <line class="part" x1="130" y1="92" x2="105" y2="118" />
+          <line class="part" x1="130" y1="92" x2="155" y2="118" />
+          <line class="part" x1="130" y1="135" x2="108" y2="172" />
+          <line class="part" x1="130" y1="135" x2="152" y2="172" />
+        </g>
+      </svg>
+
+      <div class="info">
+        <p id="pattern" class="pattern" aria-live="polite">&nbsp;</p>
+        <p class="lives">Guesses left: <strong id="remaining">–</strong></p>
+        <p class="wrong">Wrong letters: <span id="incorrect">none</span></p>
+        <p id="message" class="message" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section id="keyboard" class="keyboard" aria-label="Letter keyboard"></section>
+  </main>
+
+  <script src="/static/app.js"></script>
 </body>
 </html>

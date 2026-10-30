@@ -76,19 +76,19 @@ A complete game can be played using only `curl` or another HTTP client.
 
 ### Tasks
 
-- [ ] Create `static/index.html`, `static/style.css`, `static/app.js`.
-- [ ] Add a difficulty selector and New Game button.
-- [ ] Display the masked word.
-- [ ] Display guessed letters, incorrect letters, and remaining guesses.
-- [ ] Add an on-screen alphabet keyboard.
-- [ ] Support physical keyboard input.
-- [ ] Disable already-guessed letters.
-- [ ] Use `fetch()` to call the REST API.
-- [ ] Draw the hangman figure and update it after each incorrect guess.
-- [ ] Display win/loss messages and reveal the word at game end.
-- [ ] Provide a restart/new-game flow.
-- [ ] Show friendly messages for network or server errors.
-- [ ] Make the layout usable on desktop and mobile screen sizes.
+- [x] Create `static/index.html`, `static/style.css`, `static/app.js`.
+- [x] Add a difficulty selector and New Game button.
+- [x] Display the masked word.
+- [x] Display guessed letters, incorrect letters, and remaining guesses.
+- [x] Add an on-screen alphabet keyboard.
+- [x] Support physical keyboard input.
+- [x] Disable already-guessed letters.
+- [x] Use `fetch()` to call the REST API.
+- [x] Draw the hangman figure and update it after each incorrect guess.
+- [x] Display win/loss messages and reveal the word at game end.
+- [x] Provide a restart/new-game flow.
+- [x] Show friendly messages for network or server errors.
+- [x] Make the layout usable on desktop and mobile screen sizes.
 
 ### Completion Criteria
 

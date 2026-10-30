@@ -55,3 +55,21 @@ Items for Vin to review: the word lists; duplicate guesses raise an error (no pe
 
 Items for Vin to review: 409 for guess-after-game-over (spec listed only 400/404); added `correct` field; games are in memory and lost on server restart.
 
+**Vin:** which folder can i run the pytest in
+
+**Claude:** Run `pytest` from the project root (`hangman-app`), where `pytest.ini` lives — it points pytest at `tests/` and puts the root on the import path. Running from inside `tests/` also works since pytest finds `pytest.ini` in the parent, but the root is the intended spot.
+
+**Vin:** pytest is not recognized
+
+**Claude:** pytest isn't installed (or its Scripts folder isn't on PATH). Recommended: create a virtual environment in the project root (`python -m venv .venv`, `.venv\Scripts\activate`, `pip install -r requirements-dev.txt`), then run `pytest`. Quick alternative without venv: `python -m pip install -r requirements-dev.txt` then `python -m pytest`. If PowerShell blocks activation: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`. `.venv/` is already in `.gitignore`.
+
+**Vin:** looks good, please move onto phase 3
+
+**Claude:** Implemented Phase 3 (Browser-Based Client):
+- `static/index.html` — difficulty selector + New Game, SVG gallows with 6 body parts, masked word, guesses left, wrong letters, status message, on-screen keyboard.
+- `static/style.css` — responsive layout (side-by-side on desktop, stacked with 7-column keyboard on phones), light/dark themes, green/red key states, figure turns red on loss.
+- `static/app.js` — talks to the API with `fetch()`; on-screen and physical keyboard input; already-guessed keys disabled; a busy flag blocks double submits; win/loss messages reveal the word; Enter starts a new game after one ends; friendly errors for network failures and expired games (404); resumes the current game after a page refresh (sessionStorage). The word is never stored client-side before the game ends.
+- Tested in headless Chromium at desktop and phone sizes: keyboard and click guesses, drawing, loss flow, refresh-resume, new game, no horizontal scroll, no console errors. 67 pytest tests still pass. Checked off Phase 3; committed.
+
+Items for Vin to review: try it locally (`python server.py`, open http://localhost:5000); the default difficulty is Medium; refresh resumes the current game.
+
