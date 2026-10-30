@@ -77,3 +77,7 @@ Items for Vin to review: try it locally (`python server.py`, open http://localho
 
 **Claude:** Restyled `static/style.css`: slowly shifting peach → pink → purple → blue gradient background with soft floating color glows (deep purple/magenta version in dark mode), white bold title with shadow, frosted-glass game card, orange-to-pink gradient New Game button, raised keys with hover lift. Animation turns off for users with reduced-motion settings. Checked screenshots in light, dark, and phone sizes. Committed.
 
+**Vin:** it is too colorful now, lets try the same palette but more pastel.
+
+**Claude:** Softened the palette to pastels: peach → blush pink → lavender → baby blue gradient with faint glows, dusty-purple title, lighter card and button colors; dark mode is a muted dusk version. Also fixed a bug spotted in screenshots — long words (8+ letters) wrapped onto two lines; the masked word now stays on one line and fits up to 10-letter words on phones. Wrong letters now show "—" instead of "NONE". Committed.
+

@@ -83,7 +83,7 @@
     if (!state) {
       els.pattern.innerHTML = "&nbsp;";
       els.remaining.textContent = "–";
-      els.incorrect.textContent = "none";
+      els.incorrect.textContent = "—";
       els.parts.forEach(p => p.classList.remove("shown"));
       els.gallows.classList.remove("lost");
       for (const l of LETTERS) {
@@ -101,7 +101,7 @@
     els.remaining.textContent = state.remaining_guesses;
     els.incorrect.textContent = state.incorrect_letters.length
       ? state.incorrect_letters.join(" ")
-      : "none";
+      : "—";
 
     // Map wrong guesses onto the 6 body parts (scales if max_incorrect differs).
     const wrong = state.incorrect_letters.length;
