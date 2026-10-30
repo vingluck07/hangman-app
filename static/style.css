@@ -1,49 +1,105 @@
 :root {
-  --bg: #f6f3ee;
-  --surface: #ffffff;
-  --text: #1f1d1a;
-  --muted: #6b665f;
-  --accent: #2f6fdf;
+  --bg-gradient: linear-gradient(135deg, #ff9a6b 0%, #ff5e8a 30%, #9b5cff 65%, #3fa9ff 100%);
+  --blob-1: rgba(255, 230, 90, 0.55);
+  --blob-2: rgba(80, 240, 200, 0.45);
+  --blob-3: rgba(255, 120, 220, 0.45);
+  --surface: rgba(255, 255, 255, 0.88);
+  --text: #1f1d2b;
+  --muted: #5d5873;
+  --on-bg: #ffffff;
+  --accent: #ff4f7b;
+  --accent-2: #ffb02e;
   --accent-text: #ffffff;
-  --good: #1f8a4c;
-  --bad: #c23b32;
-  --border: #d9d3c9;
-  --key: #ece7df;
-  --key-hover: #e0d9ce;
-  --line: #1f1d1a;
+  --good: #16a35a;
+  --bad: #e2364b;
+  --border: rgba(255, 255, 255, 0.7);
+  --key: rgba(255, 255, 255, 0.85);
+  --key-hover: #ffffff;
+  --key-text: #2b2640;
+  --line: #2b2640;
+  --shadow: 0 12px 40px rgba(60, 20, 90, 0.25);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #17181b;
-    --surface: #212327;
-    --text: #ecebe8;
-    --muted: #9c9a95;
-    --accent: #6b9bff;
-    --accent-text: #0e1320;
-    --good: #4cc27f;
-    --bad: #ff7369;
-    --border: #3a3d43;
-    --key: #2c2f34;
-    --key-hover: #383c42;
-    --line: #ecebe8;
+    --bg-gradient: linear-gradient(135deg, #2a1052 0%, #5b1a7a 35%, #a3245f 70%, #1b4e8c 100%);
+    --blob-1: rgba(255, 170, 50, 0.30);
+    --blob-2: rgba(40, 220, 190, 0.25);
+    --blob-3: rgba(255, 80, 200, 0.28);
+    --surface: rgba(28, 22, 44, 0.86);
+    --text: #f3f0ff;
+    --muted: #b8b0d6;
+    --accent: #ff5c8a;
+    --accent-2: #ffb347;
+    --good: #3ad07f;
+    --bad: #ff6b7d;
+    --border: rgba(255, 255, 255, 0.14);
+    --key: rgba(255, 255, 255, 0.12);
+    --key-hover: rgba(255, 255, 255, 0.22);
+    --key-text: #f3f0ff;
+    --line: #f3f0ff;
+    --shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
   }
 }
 
 * { box-sizing: border-box; }
 
+html { min-height: 100%; }
+
 body {
   margin: 0;
-  background: var(--bg);
+  min-height: 100vh;
   color: var(--text);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   line-height: 1.4;
+  background: var(--bg-gradient);
+  background-size: 200% 200%;
+  background-attachment: fixed;
+  animation: drift 18s ease-in-out infinite alternate;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Soft colored glows floating behind the game */
+body::before, body::after {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+}
+body::before {
+  width: 420px; height: 420px;
+  top: -120px; left: -100px;
+  background: radial-gradient(circle, var(--blob-1), transparent 70%);
+  animation: float 14s ease-in-out infinite alternate;
+}
+body::after {
+  width: 480px; height: 480px;
+  bottom: -160px; right: -120px;
+  background: radial-gradient(circle, var(--blob-2), transparent 70%),
+              radial-gradient(circle at 20% 20%, var(--blob-3), transparent 60%);
+  animation: float 17s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes drift {
+  from { background-position: 0% 50%; }
+  to   { background-position: 100% 50%; }
+}
+@keyframes float {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(60px, 40px) scale(1.15); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body, body::before, body::after { animation: none; }
 }
 
 .app {
   max-width: 760px;
   margin: 0 auto;
-  padding: 24px 16px 40px;
+  padding: 28px 16px 40px;
 }
 
 .top {
@@ -55,14 +111,21 @@ body {
   margin-bottom: 20px;
 }
 
-h1 { margin: 0; font-size: 2rem; letter-spacing: 0.02em; }
+h1 {
+  margin: 0;
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: var(--on-bg);
+  text-shadow: 0 3px 0 rgba(0, 0, 0, 0.15), 0 8px 24px rgba(60, 20, 90, 0.35);
+}
 
 .controls { display: flex; align-items: center; gap: 8px; }
-.controls label { color: var(--muted); font-size: 0.9rem; }
+.controls label { color: var(--on-bg); font-size: 0.9rem; font-weight: 600; }
 
 select, button {
   font: inherit;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--border);
   padding: 8px 12px;
   background: var(--surface);
@@ -70,12 +133,16 @@ select, button {
 }
 
 #new-game-btn {
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--accent-2), var(--accent));
   color: var(--accent-text);
-  border-color: var(--accent);
-  font-weight: 600;
+  border: none;
+  font-weight: 700;
   cursor: pointer;
+  box-shadow: 0 6px 18px rgba(255, 79, 123, 0.45);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
+#new-game-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(255, 79, 123, 0.55); }
+#new-game-btn:active:not(:disabled) { transform: translateY(1px); }
 #new-game-btn:disabled { opacity: 0.6; cursor: default; }
 
 .board {
@@ -85,8 +152,11 @@ select, button {
   align-items: center;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 18px;
   padding: 20px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 #gallows { width: 100%; height: auto; }
@@ -126,21 +196,24 @@ select, button {
 
 .key {
   padding: 10px 0;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   background: var(--key);
+  color: var(--key-text);
   border: 1px solid var(--border);
   cursor: pointer;
   min-height: 44px;
+  box-shadow: 0 3px 10px rgba(60, 20, 90, 0.15);
+  transition: transform 0.1s ease, background 0.1s ease;
 }
-.key:hover:not(:disabled) { background: var(--key-hover); }
+.key:hover:not(:disabled) { background: var(--key-hover); transform: translateY(-2px); }
 .key:focus-visible, select:focus-visible, button:focus-visible {
-  outline: 3px solid var(--accent);
+  outline: 3px solid var(--accent-2);
   outline-offset: 2px;
 }
-.key:disabled { cursor: default; opacity: 0.45; }
-.key.correct { background: var(--good); color: #fff; border-color: var(--good); opacity: 0.85; }
-.key.incorrect { background: var(--bad); color: #fff; border-color: var(--bad); opacity: 0.6; }
+.key:disabled { cursor: default; opacity: 0.5; box-shadow: none; }
+.key.correct { background: var(--good); color: #fff; border-color: var(--good); opacity: 0.9; }
+.key.incorrect { background: var(--bad); color: #fff; border-color: var(--bad); opacity: 0.7; }
 
 @media (max-width: 560px) {
   .board { grid-template-columns: 1fr; text-align: center; padding: 16px; }

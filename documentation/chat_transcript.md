@@ -73,3 +73,7 @@ Items for Vin to review: 409 for guess-after-game-over (spec listed only 400/404
 
 Items for Vin to review: try it locally (`python server.py`, open http://localhost:5000); the default difficulty is Medium; refresh resumes the current game.
 
+**Vin:** it looks very bland, can you make the background more colorful to entice players
+
+**Claude:** Restyled `static/style.css`: slowly shifting peach → pink → purple → blue gradient background with soft floating color glows (deep purple/magenta version in dark mode), white bold title with shadow, frosted-glass game card, orange-to-pink gradient New Game button, raised keys with hover lift. Animation turns off for users with reduced-motion settings. Checked screenshots in light, dark, and phone sizes. Committed.
+
