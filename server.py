@@ -1,7 +1,9 @@
 """Flask server exposing the Hangman REST API and serving the browser client."""
 
+import logging
 import os
 import threading
+import time
 import uuid
 from collections import OrderedDict
 
@@ -13,6 +15,9 @@ from words import InvalidDifficultyError, WordManager
 
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
 MAX_ACTIVE_GAMES = 10_000  # oldest games are dropped beyond this
+MAX_BODY_BYTES = 16 * 1024  # API bodies are tiny; reject anything larger
+
+log = logging.getLogger("hangman")
 
 
 class GameStore:
@@ -54,6 +59,7 @@ def game_response(game_id, game, **extra):
 def create_app(word_manager=None, max_games=MAX_ACTIVE_GAMES):
     app = Flask(__name__, static_folder=STATIC_DIR, static_url_path="/static")
     app.json.sort_keys = False
+    app.config["MAX_CONTENT_LENGTH"] = MAX_BODY_BYTES
     words = word_manager or WordManager()
     store = GameStore(max_games)
     app.config["GAME_STORE"] = store
@@ -112,7 +118,23 @@ def create_app(word_manager=None, max_games=MAX_ACTIVE_GAMES):
                 return error(str(e), 400)
             return jsonify(game_response(game_id, game, correct=correct))
 
-    # ----- JSON errors for unknown API routes / methods ----------------------
+    # ----- request logging ---------------------------------------------------
+
+    @app.before_request
+    def start_timer():
+        request.environ["hangman.start"] = time.perf_counter()
+
+    @app.after_request
+    def log_request(response):
+        if request.path.startswith("/api/"):
+            start = request.environ.get("hangman.start", time.perf_counter())
+            ms = (time.perf_counter() - start) * 1000
+            level = logging.WARNING if response.status_code >= 400 else logging.INFO
+            log.log(level, "%s %s -> %s (%.1f ms)",
+                    request.method, request.path, response.status_code, ms)
+        return response
+
+    # ----- JSON errors ----------------------------------------------------------
 
     @app.errorhandler(HTTPException)
     def handle_http_error(e):
@@ -120,8 +142,20 @@ def create_app(word_manager=None, max_games=MAX_ACTIVE_GAMES):
             return error(e.description or e.name, e.code)
         return e
 
+    @app.errorhandler(Exception)
+    def handle_unexpected_error(e):
+        log.exception("Unhandled error on %s %s", request.method, request.path)
+        if request.path.startswith("/api/"):
+            return error("internal server error", 500)
+        return "Internal server error", 500
+
     return app
 
+
+logging.basicConfig(
+    level=os.environ.get("LOG_LEVEL", "INFO").upper(),
+    format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+)
 
 app = create_app()
 

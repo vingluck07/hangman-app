@@ -85,3 +85,12 @@ Items for Vin to review: try it locally (`python server.py`, open http://localho
 
 **Claude:** Changed the title to Fredoka (rounded, bubbly), bigger and tilted slightly; it wobbles the other way on hover. The New Game button uses Fredoka too. The font is self-hosted in `static/fonts/` (free SIL Open Font License, included as `OFL.txt`) so it works offline and on the deployed site without relying on Google Fonts. Verified in screenshots. Committed.
 
+**Vin:** looks much better. Please move onto phase 4
+
+**Claude:** Implemented Phase 4 (Testing and Debugging):
+- `server.py` — request logging (method, path, status, time; 4xx/5xx logged as warnings; never logs the word), `LOG_LEVEL` env var, catch-all handler returning JSON 500 with traceback logged, 16 KB request body limit (JSON 413).
+- `tests/test_api.py` — added tests for 413, 500, logging, and concurrency (7 threads guessing at once → exactly 6 accepted + 1 rejected after loss; same letter sent 5× at once counts once).
+- `tests/test_browser.py` — optional Playwright end-to-end tests at desktop and phone sizes: win via physical keyboard, loss via on-screen keys, drawing per wrong guess, rapid double-press counts once, word not in page/sessionStorage while playing, refresh resumes, long word stays on one line (regression), unknown saved game starts fresh, no console errors. Skipped automatically if Playwright isn't installed.
+- `documentation/BUGS.md` — bug log with fixes and regression tests.
+- Results: 88 passed (73 locally on Vin's machine + 15 browser tests in Chromium; browser suite run 3× with no flakes). Checked off Phase 4 except manual Firefox testing, left for Vin. Committed.
+

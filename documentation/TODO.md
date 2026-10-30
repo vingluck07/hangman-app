@@ -100,28 +100,29 @@ A player can play a full server-hosted game from the browser. No hidden word is 
 
 ### Unit Tests
 
-- [ ] Set up `pytest` and a `tests/` folder.
-- [ ] Test `HangmanGame`: correct/incorrect guesses, duplicates, invalid input, masked word.
-- [ ] Test win paths and loss paths.
-- [ ] Test answer-disclosure rules.
-- [ ] Test word loading, validation, and random selection by difficulty.
-- [ ] Test invalid difficulty handling.
+- [x] Set up `pytest` and a `tests/` folder.
+- [x] Test `HangmanGame`: correct/incorrect guesses, duplicates, invalid input, masked word.
+- [x] Test win paths and loss paths.
+- [x] Test answer-disclosure rules.
+- [x] Test word loading, validation, and random selection by difficulty.
+- [x] Test invalid difficulty handling.
 
 ### API Tests
 
-- [ ] Use the Flask test client to test every endpoint.
-- [ ] Test status codes and JSON shapes for success and error cases.
-- [ ] Test missing/unknown game IDs and malformed bodies.
-- [ ] Test that no response leaks the word during an active game.
-- [ ] Add an end-to-end test that plays a full game through the API.
+- [x] Use the Flask test client to test every endpoint.
+- [x] Test status codes and JSON shapes for success and error cases.
+- [x] Test missing/unknown game IDs and malformed bodies.
+- [x] Test that no response leaks the word during an active game.
+- [x] Add an end-to-end test that plays a full game through the API.
 
 ### Browser Testing and Debugging
 
-- [ ] Manually test full games on each difficulty in Chrome, Firefox, and a mobile viewport.
-- [ ] Check the browser console and network tab for errors.
-- [ ] Verify keyboard and on-screen input don't double-submit.
-- [ ] Add server-side logging for requests and errors.
-- [ ] Track and fix bugs found; add a regression test for each.
+- [x] Automated browser tests in Chromium at desktop and mobile sizes (`tests/test_browser.py`).
+- [ ] Manually test full games on each difficulty in Firefox (Vin).
+- [x] Check the browser console and network tab for errors.
+- [x] Verify keyboard and on-screen input don't double-submit.
+- [x] Add server-side logging for requests and errors.
+- [x] Track and fix bugs found; add a regression test for each.
 
 ### Completion Criteria
 

@@ -190,3 +190,70 @@ def test_store_evicts_oldest(tmp_path):
     new_game(c)
     new_game(c)
     assert c.get(f"/api/games/{first}").status_code == 404
+
+
+# ----- Phase 4: robustness, logging, concurrency -----------------------------
+
+def test_oversized_body_rejected(client):
+    r = client.post("/api/games", data="x" * (32 * 1024), content_type="application/json")
+    assert r.status_code == 413
+    assert "error" in r.get_json()
+
+
+def test_unexpected_error_returns_json_500(tmp_path):
+    class BrokenWords:
+        def random_word(self, difficulty):
+            raise RuntimeError("boom")
+
+    app = create_app(BrokenWords())
+    r = app.test_client().post("/api/games", json={"difficulty": "easy"})
+    assert r.status_code == 500
+    assert r.get_json() == {"error": "internal server error"}
+
+
+def test_requests_are_logged(client, caplog):
+    caplog.set_level("INFO", logger="hangman")
+    gid = new_game(client)["game_id"]
+    client.get("/api/games/missing")
+    messages = [r.getMessage() for r in caplog.records]
+    assert any("POST /api/games -> 201" in m for m in messages)
+    assert any("GET /api/games/missing -> 404" in m for m in messages)
+    assert all("cat" not in m for m in messages)  # hidden word never logged
+
+
+def test_concurrent_guesses_are_consistent(client):
+    """Many threads guessing on one game must not double-count or corrupt state."""
+    import threading
+
+    gid = new_game(client, "medium")["game_id"]  # word: garden
+    letters = list("bcfhijk")  # 7 wrong letters, only 6 lives
+    codes = []
+
+    def worker(letter):
+        codes.append(guess(client, gid, letter).status_code)
+
+    threads = [threading.Thread(target=worker, args=(l,)) for l in letters]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+
+    state = client.get(f"/api/games/{gid}").get_json()
+    assert state["status"] == "lost"
+    assert len(state["incorrect_letters"]) == 6
+    assert sorted(codes) == [200] * 6 + [409]
+
+
+def test_same_letter_sent_twice_concurrently_counts_once(client):
+    import threading
+
+    gid = new_game(client)["game_id"]
+    codes = []
+    threads = [threading.Thread(target=lambda: codes.append(guess(client, gid, "z").status_code))
+               for _ in range(5)]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+    assert sorted(codes) == [200] + [400] * 4
+    assert client.get(f"/api/games/{gid}").get_json()["remaining_guesses"] == 5

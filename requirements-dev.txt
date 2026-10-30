@@ -1,2 +1,6 @@
 -r requirements.txt
 pytest>=8
+
+# Optional: browser tests in tests/test_browser.py (skipped if not installed)
+#   pip install playwright
+#   python -m playwright install chromium
